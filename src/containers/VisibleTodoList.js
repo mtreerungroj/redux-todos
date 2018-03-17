@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import TodoList from '../components/TodoList'
+import { connect } from 'react-redux'
 
 class VisibleTodoList extends Component {
-  todos = [{ id: 1, text: 'foo' }, { id: 2, text: 'bar' }]
-
   render () {
-    return <TodoList todos={this.todos} />
+    return <TodoList todos={this.props.todos} />
   }
 }
 
-export default VisibleTodoList
+const mapStateToProps = state => ({ todos: state })
+
+export default connect(mapStateToProps)(VisibleTodoList)
