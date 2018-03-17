@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { addTodo } from '../actions/index'
 
 class AddTodo extends Component {
   submitTodo = e => {
     e.preventDefault()
     if (!this.input.value.trim()) return
-    console.log(this.input.value)
+    this.props.addTodo(this.input.value)
     this.input.value = ''
   }
 
@@ -21,4 +22,9 @@ class AddTodo extends Component {
   }
 }
 
-export default connect()(AddTodo)
+// ดูฟังก์ชันจาก actions
+let mapDispatchToProps = dispatch => ({
+  addTodo: text => dispatch(addTodo(text))
+})
+
+export default connect(null, mapDispatchToProps)(AddTodo)
