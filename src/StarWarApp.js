@@ -1,4 +1,4 @@
-import React, { component } from 'react'
+import React, { Component } from 'react'
 
 const starWarsChars = [
   { name: 'Luke', side: 'light' },
@@ -24,9 +24,27 @@ const DisplayList = ({ list }) => (
 // }
 // const FilteredList = withFilterProps(DisplayList)
 
+// HOC 1
 const withTransformProps = transformFunc => BaseComponent => baseProps => {
   const transformedProps = transformFunc(baseProps)
   return <BaseComponent {...transformedProps} />
+}
+
+// HOC 2
+const withSimpleState = defaultState => BaseComponent => {
+  return class withSimpleState extends Component {
+    state = { valuse: defaultState }
+    updateState = value => this.setState({ value })
+    render () {
+      return (
+        <BaseComponent
+          {...this.props}
+          stateValue={this.state.value}
+          stateHandler={this.updateState}
+        />
+      )
+    }
+  }
 }
 
 const FilteredList = withTransformProps(({ list, side }) => ({
