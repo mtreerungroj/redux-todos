@@ -1,4 +1,7 @@
-const initial = [{ id: 1, text: 'foo' }, { id: 2, text: 'bar' }]
+const initial = [
+  { id: 1, text: 'foo', completed: false },
+  { id: 2, text: 'bar', completed: false }
+]
 
 const todos = (state = initial, action) => {
   switch (action.type) {
@@ -7,10 +10,14 @@ const todos = (state = initial, action) => {
         ...state,
         {
           id: action.id,
-          text: action.text
+          text: action.text,
+          completed: action.completed
         }
       ]
-      break
+    case 'TOGGLE_TODO':
+      return state.map(
+        t => (t.id === action.id ? { ...t, completed: !t.completed } : t)
+      )
     default:
       return state
   }
