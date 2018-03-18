@@ -1,21 +1,32 @@
 import TodoList from '../components/TodoList'
 import { connect } from 'react-redux'
 import { toggleTodo, VisibilityFilter } from '../actions'
+import visibilityFilter from '../reducers/visibilityFilter'
+import { createSelector } from 'reselect'
 
 const getVisibleTodos = (todos, filter) => {
   switch (filter) {
     case VisibilityFilter.SHOW_COMPLETED:
       return todos.filter(t => t.completed)
-    case VisibilityFilter.SHOW_ALL:
+    case VisibilityFilter.SHOW_ACTIVE:
       return todos.filter(t => !t.completed)
     default:
       return todos
   }
 }
 
+// selector ช่วยลดปัญหาเรียกโค้ดเดิมซ้ำๆๆ เนื่องจาก state อื่นเปลี่ยน
+const todosSelector = state => state.todos
+const visibilityFilterSelector = state => state.visibilityFilter
+const getVisibleTodosSelector = createSelector(
+  [todosSelector, visibilityFilterSelector],
+  (todos, visibilityFilter) => getVisibleTodos(todos, visibilityFilter)
+)
+
 const mapStateToProps = state => ({
-  todos: getVisibleTodos(state.todos, state.visibilityFilter)
+  todos: getVisibleTodosSelector(state)
 }) // ชื่อที่สั่งตอน combine reducer ไม่ใช่ชื่อ reducer จริงๆ
+
 const mapDispatchToProps = dispatch => ({
   toggleTodo: id => dispatch(toggleTodo(id))
 })
