@@ -1,3 +1,5 @@
+import { createActions } from 'redux-actions'
+
 let nextTodoId = 0
 // action creator
 // ควร gen id ตรงนี้ ไม่ใช่ที่ reducer
@@ -19,7 +21,15 @@ export const VisibilityFilter = {
   SHOW_ACTIVE: 'SHOW_ACTIVE'
 }
 
-export const setVisibilityFilter = filter => ({
-  type: 'SET_VISIBILITY_FILTER',
-  filter: filter || VisibilityFilter.SHOW_ALL
+// export const setVisibilityFilter = filter => ({
+//   type: 'SET_VISIBILITY_FILTER',
+//   filter: filter || VisibilityFilter.SHOW_ALL
+// })
+
+// alternative
+export const { setVisibilityFilter } = createActions({
+  // export default createActions({
+  SET_VISIBILITY_FILTER: (filter = VisibilityFilter.SHOW_ALL) => ({ filter }) // payload ที่ส่งเข้าไปในตัว action
 })
+// key เป็นชื่อ type อัตโนมัติ
+// object ที่ return คือ object ืืั้จะเอาไป merge กับ type
