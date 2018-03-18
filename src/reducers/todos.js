@@ -14,7 +14,7 @@ const todos = (state = initial, action) => {
           completed: action.completed
         }
       ]
-    case 'TOGGLE_TODO':
+    case 'TOGGLE_TODO': // pure function, return new object without mutation
       return state.map(
         t => (t.id === action.id ? { ...t, completed: !t.completed } : t)
       )
