@@ -1,6 +1,6 @@
 import TodoList from '../components/TodoList'
 import { connect } from 'react-redux'
-import { toggleTodo, VisibilityFilter } from '../actions'
+import { toggleTodo, deleteTodo, VisibilityFilter } from '../actions'
 import { createSelector } from 'reselect'
 
 const getVisibleTodos = (todos, filter) => {
@@ -27,7 +27,8 @@ const mapStateToProps = state => ({
 }) // ชื่อที่สั่งตอน combine reducer ไม่ใช่ชื่อ reducer จริงๆ
 
 const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id))
+  toggleTodo: id => dispatch(toggleTodo(id)),
+  deleteTodo: id => dispatch(deleteTodo(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList)

@@ -25,7 +25,6 @@ export const VisibilityFilter = {
 //   type: 'SET_VISIBILITY_FILTER',
 //   filter: filter || VisibilityFilter.SHOW_ALL
 // })
-
 // alternative
 export const { setVisibilityFilter } = createActions({
   // export default createActions({
@@ -33,3 +32,8 @@ export const { setVisibilityFilter } = createActions({
 })
 // key เป็นชื่อ type อัตโนมัติ
 // object ที่ return คือ object ืืั้จะเอาไป merge กับ type
+
+export const deleteTodo = id => ({
+  type: 'DELETE_TODO',
+  id
+})
