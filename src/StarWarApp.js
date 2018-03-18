@@ -7,12 +7,22 @@ const starWarsChars = [
   { name: 'Palpatine', side: 'dark' }
 ]
 
-const DisplayList = ({ list }) => (
+// for non HOC & HOC 1
+// const DisplayList = ({ list }) => (
+//   <div>
+//     {list.map(c => <div key={c.name}>{c.name}</div>)}
+//   </div>
+// )
+
+// for HOC 2
+const DisplayList = ({ list, otherSide, stateHandler }) => (
   <div>
+    <button onClick={() => stateHandler(otherSide)}>switch</button>
     {list.map(c => <div key={c.name}>{c.name}</div>)}
   </div>
 )
 
+// non HOC
 // const FilteredList = ({list, side}) => {
 //   lst filtered = list.filter(c => c.side === side)
 //   return <DisplayList list={filtered}/>
@@ -47,11 +57,18 @@ const withSimpleState = defaultState => BaseComponent => {
   }
 }
 
-const FilteredList = withTransformProps(({ list, side }) => ({
-  list: list.filter(c => c.side === side)
-}))(DisplayList)
+const FilteredList = withTransformProps(
+  ({ list, stateValue, stateHandler }) => ({
+    list: list.filter(c => c.side === stateValue),
+    otherSide: stateValue === 'dark' ? 'light' : 'dark',
+    stateHandler
+  })
+)(DisplayList)
 
-const StarWarApp = () => <FilteredList list={starWarsChars} side='dark' />
+// const StarWarApp = () => <FilteredList list={starWarsChars} side='dark' />
 // list กับ side คือ baseProps
+
+const ToggleableFilteredList = withSimpleState('dark')(FilteredList)
+const StarWarApp = () => <ToggleableFilteredList list={starWarsChars} />
 
 export default StarWarApp
