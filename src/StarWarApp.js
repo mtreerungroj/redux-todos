@@ -57,18 +57,32 @@ const withSimpleState = defaultState => BaseComponent => {
   }
 }
 
-const FilteredList = withTransformProps(
-  ({ list, stateValue, stateHandler }) => ({
-    list: list.filter(c => c.side === stateValue),
-    otherSide: stateValue === 'dark' ? 'light' : 'dark',
-    stateHandler
-  })
-)(DisplayList)
+const compose = (...hocs) => BaseComponent =>
+  hocs.reduceRight((acc, hoc) => hoc(acc), BaseComponent)
+
+//  use compose istead
+// const FilteredList = withTransformProps(
+//   ({ list, stateValue, stateHandler }) => ({
+//     list: list.filter(c => c.side === stateValue),
+//     otherSide: stateValue === 'dark' ? 'light' : 'dark',
+//     stateHandler
+//   })
+// )(DisplayList)
 
 // const StarWarApp = () => <FilteredList list={starWarsChars} side='dark' />
 // list กับ side คือ baseProps
 
-const ToggleableFilteredList = withSimpleState('dark')(FilteredList)
+// const ToggleableFilteredList = withSimpleState('dark')(FilteredList)
+
+const ToggleableFilteredList = compose(
+  withSimpleState('dark'),
+  withTransformProps(({ list, stateValue, stateHandler }) => ({
+    list: list.filter(c => c.side === stateValue),
+    otherSide: stateValue === 'dark' ? 'light' : 'dark',
+    stateHandler
+  }))
+)(DisplayList)
+
 const StarWarApp = () => <ToggleableFilteredList list={starWarsChars} />
 
 export default StarWarApp
